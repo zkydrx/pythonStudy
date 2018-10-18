@@ -44,7 +44,7 @@ print("Hello " + "world!")
 
 print("This is a string"[0])
 
-print("%s can be %s") % ("Strings", "interpolated")
+print("%s can be %s" % ("Strings", "interpolated"))
 
 print("{0} can be {1}".format("strings", "formatted"))
 
@@ -68,7 +68,8 @@ print(not "")
 ####################################################
 
 # 很方便的输出
-print "I'm Python. Nice to meet you！"
+print
+'I\'m Python. Nice to meet you！'
 
 # 给变量赋值前不需要事先声明
 some_var = 5  # 一般建议使用小写字母和下划线组合来做为变量名
@@ -240,11 +241,14 @@ some_var1 = 5
 # 这是个if语句，在python中缩进是很重要的
 # 下面的代码片段将会输出 "some_var1 is totally biger than 10"
 if some_var1 > 10:
-    print "some_var1 is totally biger than 10"
+    print
+    'some_var1 is totally biger than 10'
 elif some_var1 < 10:  # 这个 elif 语句是不必须的
-    print 'some_var1 is smaller than 10'
+    print
+    'some_var1 is smaller than 10'
 else:  # 这个 else也不是必须的
-    print "some_var1 is indeed 10."
+    print
+    "some_var1 is indeed 10."
 
 """
 用for循环遍历列表
@@ -254,7 +258,8 @@ cat is a mammal
 mouse is a mammal
 """
 for animal in ["dog", "cat", "mouse"]:
-    print "%s is a mammal" % animal
+    print
+    "%s is a mammal" % animal
 
 """
 `range(number)` 返回从0到给定数字的列表
@@ -265,7 +270,8 @@ for animal in ["dog", "cat", "mouse"]:
 3
 """
 for i in range(4):
-    print i
+    print
+    i
 
 """
 while循环
@@ -277,7 +283,8 @@ while循环
 """
 x = 0
 while x < 5:
-    print x
+    print
+    x
     x += 1  # x = x + 1的简写
 
 # 用try/except 块来处理异常
@@ -286,16 +293,19 @@ try:
     fh = open("testfile", "w")
     fh.write("这是一个测试文件，用于测试异常!!")
 except IOError:
-    print "Error: 没有找到文件或读取文件失败"
+    print
+    "Error: 没有找到文件或读取文件失败"
 else:
-    print "内容写入文件成功"
+    print
+    "内容写入文件成功"
     fh.close()
 
 try:
     fh = open("testfile", "w")
     fh.write("这是一个测试文件，用于测试异常!!!!!!!!")
 finally:
-    print "Error: 没有找到文件或读取文件失败"
+    print
+    "Error: 没有找到文件或读取文件失败"
 
 
 ####################################################
@@ -304,7 +314,8 @@ finally:
 
 # 用def来新建函数
 def add(x, y):
-    print "x is %s and y is %s" % (x, y)  # =>x is 333 and y is 555
+    print
+    "x is %s and y is %s" % (x, y)  # =>x is 333 and y is 555
     return x + y  # 通过return来返回值
 
 
@@ -332,8 +343,10 @@ print(keyword_args(big="foot", loch="ness"))  # =>{'big': 'foot', 'loch': 'ness'
 
 # 你也可以同时将一个函数定义成两种形式
 def all_the_args(*args, **kwargs):
-    print args
-    print kwargs
+    print
+    args
+    print
+    kwargs
 
 
 """
@@ -342,7 +355,8 @@ def all_the_args(*args, **kwargs):
     {"a":3,"b":4}
 """
 # 当调用函数的时候，我们也恶意进行相反的操作，把元组和字典展开为参数
-print "把元组和字典展开为参数"
+print
+"把元组和字典展开为参数"
 args = (1, 2, 3, 4)
 kwargs = {"a": 3, "b": 4}
 print(all_the_args(*args))  # 等价于foo(1,2,3,4)
@@ -391,24 +405,20 @@ class Human(object):
     # 类属性，由所有类的对象共享
     species = "H. sapiens"
 
-
     # 基本构造函数
     def __init__(self, name):
         # 将参数付给对象成员属性
         self.name = name
 
-
     # 成员方法，参数要有self
     def say(self, msg):
         return "%s:%s" % (self.name, msg)
-
 
     # 类方法由所有类的对象共享
     # 这类方法在调用时，会把类本身传给第一个参数
     @classmethod
     def get_species(cls):
         return cls.species
-
 
     # 静态方法是不需要类和对象的引用就可以调用的方法
     @staticmethod
@@ -419,46 +429,54 @@ class Human(object):
 # 实例化一个类
 i = Human(name="Ian")
 
-print i.say("hi")
+print
+i.say("hi")
 
-j = Human(name = "Joel")
-print j.say("hello") #输出 "Joel:hello"
+j = Human(name="Joel")
+print
+j.say("hello")  # 输出 "Joel:hello"
 
 # 访问类的方法
 i.get_species()
-print(i.get_species()) #=>"H. sapiens"
-#改变共享属性
+print(i.get_species())  # =>"H. sapiens"
+# 改变共享属性
 Human.species = "H. Neanderthalensis"
 i.get_species()
-print(i.get_species())# =>H. Neanderthalensis
+print(i.get_species())  # =>H. Neanderthalensis
 j.get_species()
-print(j.get_species())# =>H. Neanderthalensis
+print(j.get_species())  # =>H. Neanderthalensis
 
-#访问静态变量
+# 访问静态变量
 Human.grunt()
-print(Human.grunt()) # => "*grunt*"
+print(Human.grunt())  # => "*grunt*"
 
 ####################################################
 ## 6. 模块
 ####################################################
 
-#我们可以导入其他模块
+# 我们可以导入其他模块
 import math
-print math.sqrt(16) # => 4
-#我们也可以从一个模块中导入特定的函数
-from math import ceil,floor
-print ceil(3.7) # => 4.0
-print floor(3.7) # => 3.0
 
-#从模块中导入所有的函数
-#警告：不推荐使用
+print
+math.sqrt(16)  # => 4
+# 我们也可以从一个模块中导入特定的函数
+from math import ceil, floor
+
+print
+ceil(3.7)  # => 4.0
+print
+floor(3.7)  # => 3.0
+
+# 从模块中导入所有的函数
+# 警告：不推荐使用
 from math import *
 
 # 简写模块名
 import math as m
 
 math.sqrt(16) == m.sqrt(16)
-print math.sqrt(16) == m.sqrt(16)  # => True
+print
+math.sqrt(16) == m.sqrt(16)  # => True
 
 # Python 的模块其实只是普通的python文件
 # 你也可以创建自己的模块，并且导入它们
@@ -466,5 +484,7 @@ print math.sqrt(16) == m.sqrt(16)  # => True
 
 # 也可以通过下买你的方法查看模块中由什么属性和方法
 import math
-print dir(math)
-#['__doc__', '__name__', '__package__', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atan2', 'atanh', 'ceil', 'copysign', 'cos', 'cosh', 'degrees', 'e', 'erf', 'erfc', 'exp', 'expm1', 'fabs', 'factorial', 'floor', 'fmod', 'frexp', 'fsum', 'gamma', 'hypot', 'isinf', 'isnan', 'ldexp', 'lgamma', 'log', 'log10', 'log1p', 'modf', 'pi', 'pow', 'radians', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc']
+
+print
+dir(math)
+# ['__doc__', '__name__', '__package__', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atan2', 'atanh', 'ceil', 'copysign', 'cos', 'cosh', 'degrees', 'e', 'erf', 'erfc', 'exp', 'expm1', 'fabs', 'factorial', 'floor', 'fmod', 'frexp', 'fsum', 'gamma', 'hypot', 'isinf', 'isnan', 'ldexp', 'lgamma', 'log', 'log10', 'log1p', 'modf', 'pi', 'pow', 'radians', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc']
