@@ -1,5 +1,3 @@
-
-
 # Single line comments start with a number symbol.
 
 """ Multiline strings can be written
@@ -141,13 +139,13 @@ None is None  # => True
 bool(0)  # => False
 bool("")  # => False
 
-
 ####################################################
 # 2. Variables and Collections
 ####################################################
 
 # Python has a print statement
-print "I'm Python. Nice to meet you!"  # => I'm Python. Nice to meet you!
+print
+"I'm Python. Nice to meet you!"  # => I'm Python. Nice to meet you!
 
 # Simple way to get input data from console
 input_string_var = raw_input(
@@ -334,13 +332,12 @@ filled_set | other_set  # => {1, 2, 3, 4, 5, 6}
 # Check for existence in a set with in
 2 in filled_set  # => True
 10 in filled_set  # => False
-10 not in filled_set # => True
+10 not in filled_set  # => True
 
 # Check data type of variable
-type(li)   # => list
-type(filled_dict)   # => dict
-type(5)   # => int
-
+type(li)  # => list
+type(filled_dict)  # => dict
+type(5)  # => int
 
 ####################################################
 #  3. Control Flow
@@ -352,11 +349,14 @@ some_var = 5
 # Here is an if statement. Indentation is significant in python!
 # prints "some_var is smaller than 10"
 if some_var > 10:
-    print "some_var is totally bigger than 10."
+    print
+    'some_var is totally bigger than 10.'
 elif some_var < 10:  # This elif clause is optional.
-    print "some_var is smaller than 10."
+    print
+    "some_var is smaller than 10."
 else:  # This is optional too.
-    print "some_var is indeed 10."
+    print
+    "some_var is indeed 10."
 
 """
 For loops iterate over lists
@@ -367,7 +367,8 @@ prints:
 """
 for animal in ["dog", "cat", "mouse"]:
     # You can use {0} to interpolate formatted strings. (See above.)
-    print "{0} is a mammal".format(animal)
+    print
+    "{0} is a mammal".format(animal)
 
 """
 "range(number)" returns a list of numbers
@@ -379,7 +380,8 @@ prints:
     3
 """
 for i in range(4):
-    print i
+    print
+    i
 
 """
 "range(lower, upper)" returns a list of numbers
@@ -391,7 +393,8 @@ prints:
     7
 """
 for i in range(4, 8):
-    print i
+    print
+    i
 
 """
 While loops go until a condition is no longer met.
@@ -403,7 +406,8 @@ prints:
 """
 x = 0
 while x < 4:
-    print x
+    print
+    x
     x += 1  # Shorthand for x = x + 1
 
 # Handle exceptions with a try/except block
@@ -417,14 +421,17 @@ except IndexError as e:
 except (TypeError, NameError):
     pass  # Multiple exceptions can be handled together, if required.
 else:  # Optional clause to the try/except block. Must follow all except blocks
-    print "All good!"  # Runs only if the code in try raises no exceptions
+    print
+    "All good!"  # Runs only if the code in try raises no exceptions
 finally:  # Execute under all circumstances
-    print "We can clean up resources here"
+    print
+    "We can clean up resources here"
 
 # Instead of try/finally to cleanup resources you can use a with statement
 with open("myfile.txt") as f:
     for line in f:
-        print line
+        print
+        line
 
 
 ####################################################
@@ -433,7 +440,8 @@ with open("myfile.txt") as f:
 
 # Use "def" to create new functions
 def add(x, y):
-    print "x is {0} and y is {1}".format(x, y)
+    print
+    "x is {0} and y is {1}".format(x, y)
     return x + y  # Return values with a return statement
 
 
@@ -465,8 +473,10 @@ keyword_args(big="foot", loch="ness")  # => {"big": "foot", "loch": "ness"}
 
 # You can do both at once, if you like
 def all_the_args(*args, **kwargs):
-    print args
-    print kwargs
+    print
+    args
+    print
+    kwargs
 
 
 """
@@ -488,8 +498,10 @@ all_the_args(*args, **kwargs)  # equivalent to all_the_args(1, 2, 3, 4, a=3, b=4
 # by expanding them with * and ** respectively
 def pass_all_the_args(*args, **kwargs):
     all_the_args(*args, **kwargs)
-    print varargs(*args)
-    print keyword_args(**kwargs)
+    print
+    varargs(*args)
+    print
+    keyword_args(**kwargs)
 
 
 # Function Scope
@@ -499,14 +511,17 @@ x = 5
 def set_x(num):
     # Local var x not the same as global variable x
     x = num  # => 43
-    print x  # => 43
+    print
+    x  # => 43
 
 
 def set_global_x(num):
     global x
-    print x  # => 5
+    print
+    x  # => 5
     x = num  # global var x is now set to 6
-    print x  # => 6
+    print
+    x  # => 6
 
 
 set_x(43)
@@ -598,10 +613,12 @@ class Human(object):
 
 # Instantiate a class
 i = Human(name="Ian")
-print i.say("hi")  # prints out "Ian: hi"
+print
+i.say("hi")  # prints out "Ian: hi"
 
 j = Human("Joel")
-print j.say("hello")  # prints out "Joel: hello"
+print
+j.say("hello")  # prints out "Joel: hello"
 
 # Call our class method
 i.get_species()  # => "H. sapiens"
@@ -631,13 +648,16 @@ i.age  # => raises an AttributeError
 # You can import modules
 import math
 
-print math.sqrt(16)  # => 4
+print
+math.sqrt(16)  # => 4
 
 # You can get specific functions from a module
 from math import ceil, floor
 
-print ceil(3.7)  # => 4.0
-print floor(3.7)  # => 3.0
+print
+ceil(3.7)  # => 4.0
+print
+floor(3.7)  # => 3.0
 
 # You can import all functions from a module.
 # Warning: this is not recommended
@@ -690,7 +710,8 @@ def double_numbers(iterable):
 # Running the following would mean we'll double all values first and return all
 # of them back to be checked by our condition
 for value in double_numbers(range(1000000)):  # `test_non_generator`
-    print value
+    print
+    value
     if value > 5:
         break
 
@@ -707,7 +728,8 @@ def double_numbers_generator(iterable):
 # our logic. Hence as soon as we see a value > 5, we break out of the
 # loop and don't need to double most of the values sent in (MUCH FASTER!)
 for value in double_numbers_generator(xrange(1000000)):  # `test_generator`
-    print value
+    print
+    value
     if value > 5:
         break
 
@@ -728,6 +750,7 @@ values = (-x for x in [1, 2, 3, 4, 5])
 gen_to_list = list(values)
 print(gen_to_list)  # => [-1, -2, -3, -4, -5]
 
+
 # Decorators
 # A decorator is a higher order function, which accepts and returns a function.
 # Simple usage example – add_apples decorator will add 'Apple' element into
@@ -737,15 +760,19 @@ def add_apples(func):
         fruits = func()
         fruits.append('Apple')
         return fruits
+
     return get_fruits
+
 
 @add_apples
 def get_fruits():
     return ['Banana', 'Mango', 'Orange']
 
+
 # Prints out the list of fruits with 'Apple' element in it:
 # Banana, Mango, Orange, Apple
-print ', '.join(get_fruits())
+print
+', '.join(get_fruits())
 
 # in this example beg wraps say
 # Beg will call say. If say_please is True then it will change the returned
@@ -770,6 +797,7 @@ def say(say_please=False):
     return msg, say_please
 
 
-print say()  # Can you buy me a beer?
-print say(say_please=True)  # Can you buy me a beer? Please! I am poor :(
-
+print
+say()  # Can you buy me a beer?
+print
+say(say_please=True)  # Can you buy me a beer? Please! I am poor :(
