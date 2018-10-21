@@ -155,23 +155,23 @@ print(b)
 # 常量
 # 所谓常量就是不能变的变量，比如常用的数学常数π就是一个常量。在Python中，通常用全部大写的变量名表示常量：
 
-PI= 3.14
+PI = 3.14
 # 但事实上PI仍然是一个变量，Python根本没有任何机制保证PI不会被改变，所以，用全部大写的变量名表示常量只是一个习惯上的用法，如果你一定要改变变量PI的值，也没人能拦住你。
 #
 # 最后解释一下整数的除法为什么也是精确的。在Python中，有两种除法，一种除法是/：
 
-print(10/3)# =>3.3333333333333335
+print(10 / 3)  # =>3.3333333333333335
 # /除法计算结果是浮点数，即使是两个整数恰好整除，结果也是浮点数：
-print(9/3) # =>3.0
+print(9 / 3)  # =>3.0
 # 还有一种除法是//，称为地板除，两个整数的除法仍然是整数：
-print(10//3) # =>3
+print(10 // 3)  # =>3
 
 # 你没有看错，整数的地板除//永远是整数，即使除不尽。要做精确的除法，使用/就可以。
 #
 # 因为//除法只取结果的整数部分，所以Python还提供一个余数运算，可以得到两个整数相除的余数：
-print(10%3) # => 1
+print(10 % 3)  # => 1
 # 无论整数做//除法还是取余数，结果永远是整数，所以，整数运算结果永远是精确的。
-print(11.3%3)
+print(11.3 % 3)
 
 # Python支持多种数据类型，在计算机内部，可以把任何数据都看成一个“对象”，而变量就是在程序中用来指向这些数据对象的，对变量赋值就是把数据和变量给关联起来。
 #
@@ -180,3 +180,111 @@ print(11.3%3)
 # 注意：Python的整数没有大小限制，而某些语言的整数根据其存储长度是有大小限制的，例如Java对32位整数的范围限制在-2147483648-2147483647。
 #
 # Python的浮点数也没有大小限制，但是超出一定范围就直接表示为inf（无限大）。
+
+# Python的字符串
+# 搞清楚了令人头疼的字符编码问题后，我们再来研究Python的字符串。
+#
+# 在最新的Python 3版本中，字符串是以Unicode编码的，也就是说，Python的字符串支持多语言，例如：
+print("包含中文的str")
+# 对于单个字符的编码，Python提供了ord()函数获取字符的整数表示，chr()函数把编码转换为对应的字符：
+print(ord('A'))  # => 65
+
+print(ord('周'))  # => 21608
+
+print(chr(66))  # => B
+
+print(chr(21602))  # =>呢
+
+# 如果知道字符的整数编码，还可以用十六进制这么写str：
+print('\u4e2d\u6587')  # => 中文
+# 两种写法完全是等价的。
+
+# 由于Python的字符串类型是str，在内存中以Unicode表示，一个字符对应若干个字节。如果要在网络上传输，或者保存到磁盘上，就需要把str变为以字节为单位的bytes。
+#
+# Python对bytes类型的数据用带b前缀的单引号或双引号表示：
+
+x = b'ABC'
+# 要注意区分'ABC'和b'ABC'，前者是str，后者虽然内容显示得和前者一样，但bytes的每个字符都只占用一个字节。
+#
+# 以Unicode表示的str通过encode()方法可以编码为指定的bytes，例如：
+print('ABC'.encode('ascii'))  # =>b'ABC'
+
+print('中文'.encode('utf-8'))  # =>b'\xe4\xb8\xad\xe6\x96\x87'
+
+# print('中文'.encode('ascii')) # =>
+# Traceback (most recent call last):
+#   File "D:/project/pythonProjects/pythonStudy/study/pythonBase/pythonBase.py", line 214, in <module>
+#     print('中文'.encode('ascii')) # =>
+# UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
+# 在bytes中，无法显示为ASCII字符的字节，用\x##显示。
+
+# 反过来，如果我们从网络或磁盘上读取了字节流，那么读到的数据就是bytes。要把bytes变为str，就需要用decode()方法：
+print(b'ABC'.decode('ascii'))  # =>ABC
+print(b'\xe4\xb8\xad\xe6\x96\x87'.decode('utf-8'))  # =>中文
+
+# 如果bytes中包含无法解码的字节，decode()方法会报错：
+# print(b'\xe4\xb8\xad\xe6\x96'.decode('utf-8'))
+# =>print(b'\xe4\xb8\xad\xe6\x96'.decode('utf-8')) #=>
+# UnicodeDecodeError: 'utf-8' codec can't decode bytes in position 3-4: unexpected end of data
+
+# 如果bytes中只有一小部分无效的字节，可以传入errors='ignore'忽略错误的字节：
+print(b'\xe4\xb8\xad\xe6\x96'.decode('utf-8', errors='ignore'))  # =>中
+
+# 要计算str包含多少个字符，可以用len()函数：
+print(len('zkydrx'))  # =>6
+print(len('中文'))  # =>2
+
+# len()函数计算的是str的字符数，如果换成bytes，len()函数就计算字节数：
+
+print(b'ABC')  # =>3
+print(len(b'\xe4\xb8\xad\xe6\x96\x87'))  # =>6
+print(len('中文'.encode('utf-8')))  # =>6
+# 可见，1个中文字符经过UTF-8编码后通常会占用3个字节，而1个英文字符只占用1个字节。
+# 在操作字符串时，我们经常遇到str和bytes的互相转换。为了避免乱码问题，应当始终坚持使用UTF-8编码对str和bytes进行转换。
+#
+# 由于Python源代码也是一个文本文件，所以，当你的源代码中包含中文的时候，在保存源代码时，就需要务必指定保存为UTF-8编码。当Python解释器读取源代码时，为了让它按UTF-8编码读取，我们通常在文件开头写上这两行：
+# #!/usr/bin/env python3
+# # -*- coding: utf-8 -*-
+
+# 第一行注释是为了告诉Linux/OS X系统，这是一个Python可执行程序，Windows系统会忽略这个注释；
+#
+# 第二行注释是为了告诉Python解释器，按照UTF-8编码读取源代码，否则，你在源代码中写的中文输出可能会有乱码。
+#
+# 申明了UTF-8编码并不意味着你的.py文件就是UTF-8编码的，必须并且要确保文本编辑器正在使用UTF-8 without BOM编码：
+
+# 如果.py文件本身使用UTF-8编码，并且也申明了# -*- coding: utf-8 -*-，打开命令提示符测试就可以正常显示中文：
+
+
+# 在Python中，采用的格式化方式和C语言是一致的，用%实现，举例如下：
+
+print('Hello,%s' % 'World!')
+
+print("Hi,%s you have $%d." %('Abbot',99999))
+print("z%s" % 'ky')
+#你可能猜到了，%运算符就是用来格式化字符串的。在字符串内部，%s表示用字符串替换，%d表示用整数替换，有几个%?占位符，后面就跟几个变量或者值，顺序要对应好。如果只有一个%?，括号可以省略。
+
+# 其中，格式化整数和浮点数还可以指定是否补0和整数与小数的位数：
+
+print('%2d-%02d' %(3,1)) #=> 3-01
+print('%.2f' % 3.14) #=>3.14
+
+# 如果你不太确定应该用什么，%s永远起作用，它会把任何数据类型转换为字符串：
+
+print("Age:%s.Gender:%s"%(35,True))
+# 有些时候，字符串里面的%是一个普通字符怎么办？这个时候就需要转义，用%%来表示一个%：
+print('growth rate:%d%%'%7)
+
+# ormat()
+# 另一种格式化字符串的方法是使用字符串的format()方法，它会用传入的参数依次替换字符串内的占位符{0}、{1}……，不过这种方式写起来比%要麻烦得多：
+
+print("Hello,{0},你的银行卡余额是{1:.2f} 比上个星期提升了{2:.2f}%".format("Abbot",359993.324,20.658))
+
+# Python 3的字符串使用Unicode，直接支持多语言。
+#
+# 当str和bytes互相转换时，需要指定编码。最常用的编码是UTF-8。Python当然也支持其他编码方式，比如把Unicode编码成GB2312：
+
+print("中国".encode('gb2312')) #=>b'\xd6\xd0\xb9\xfa'
+
+# 但这种方式纯属自找麻烦，如果没有特殊业务要求，请牢记仅使用UTF-8编码。
+#
+# 格式化字符串的时候，可以用Python的交互式环境测试，方便快捷。
