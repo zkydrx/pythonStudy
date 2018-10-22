@@ -213,7 +213,7 @@ print('中文'.encode('utf-8'))  # =>b'\xe4\xb8\xad\xe6\x96\x87'
 
 # print('中文'.encode('ascii')) # =>
 # Traceback (most recent call last):
-#   File "D:/project/pythonProjects/pythonStudy/study/pythonBase/pythonBase.py", line 214, in <module>
+#   File "D:/project/pythonProjects/pythonStudy/study/pythonBase/pythonBase20181022.py", line 214, in <module>
 #     print('中文'.encode('ascii')) # =>
 # UnicodeEncodeError: 'ascii' codec can't encode characters in position 0-1: ordinal not in range(128)
 # 在bytes中，无法显示为ASCII字符的字节，用\x##显示。
