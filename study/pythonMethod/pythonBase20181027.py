@@ -130,3 +130,14 @@ def quadratic(a, b, c):
 
 
 print(quadratic(1, 4, 1))
+
+# 写个累加的方法
+def sum(x):
+    if not isinstance(x,(int,float)):
+        return TypeError('bad operand type.')
+    sum = 0
+    for i in range(0,x+1):
+        sum +=i
+    return sum
+
+print(sum(100))
