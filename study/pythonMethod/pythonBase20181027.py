@@ -339,11 +339,107 @@ print(cacl(1, 2, 3))  # =>14
 print(cacl(1, 1, 1, 2))  # => 7
 
 # 如果已经有一个list或者tuple，要调用一个可变参数怎么办？可以这样做：
-nums = [1,2,3]
+nums = [1, 2, 3]
 
-print(cacl(nums[0],nums[1],nums[2])) # => 14
+print(cacl(nums[0], nums[1], nums[2]))  # => 14
 
 # 这种写法当然是可行的，问题是太繁琐，所以Python允许你在list或tuple前面加一个*号，把list或tuple的元素变成可变参数传进去：
-print(cacl(*nums)) # => 14
+print(cacl(*nums))  # => 14
+
+
 # *nums表示把nums这个list的所有元素作为可变参数传进去。这种写法相当有用，而且很常见。
+
+# 关键字参数
+# 可变参数允许你传入0个或任意个参数，这些可变参数在函数调用时自动组装为一个tuple。而关键字参数允许你传入0个或任意个含参数名的参数，这些关键字参数在函数内部自动组装为一个dict。请看示例：
+def person(name, age, **kw):
+    print('name:', name, 'age:', age, 'other:', kw)
+
+
+# 函数person除了必选参数name和age外，还接受关键字参数kw。在调用该函数时，可以只传入必选参数：
+person('Abbot', 28)  # => name: Abbot age: 28 other: {}
+
+# 也可以传入任意个数的关键字参数：
+person('Bob', 35, city='HangZhou')  # => name: Bob age: 35 other: {'city': 'HangZhou'}
+
+person('Tom', 28, gender='M', job='Engineer')  # => name: Tom age: 28 other: {'gender': 'M', 'job': 'Engineer'}
+
+# 关键字参数有什么用？它可以扩展函数的功能。比如，在person函数里，我们保证能接收到name和age这两个参数，但是，如果调用者愿意提供更多的参数，我们也能收到。试想你正在做一个用户注册的功能，除了用户名和年龄是必填项外，其他都是可选项，利用关键字参数来定义这个函数就能满足注册的需求。
+#
+# 和可变参数类似，也可以先组装出一个dict，然后，把该dict转换为关键字参数传进去：
+extra = {'city': 'HangZhou', 'job': 'Java Programmer'}
+person('Jack', 24, city=extra['city'],
+       job=extra['job'])  # => name: Jack age: 24 other: {'city': 'HangZhou', 'job': 'Java Programmer'}
+
+# 当然，上面复杂的调用可以用简化的写法：
+extra = {'city': 'HangZhou', 'job': 'Java Programmer'}
+person('Jack', 24, **extra)  # => name: Jack age: 24 other: {'city': 'HangZhou', 'job': 'Java Programmer'}
+
+
+# **extra表示把extra这个dict的所有key-value用关键字参数传入到函数的**kw参数，kw将获得一个dict，注意kw获得的dict是extra的一份拷贝，对kw的改动不会影响到函数外的extra。
+
+# 命名关键字参数
+# 对于关键字参数，函数的调用者可以传入任意不受限制的关键字参数。至于到底传入了哪些，就需要在函数内部通过kw检查。
+
+# 仍以person()函数为例，我们希望检查是否有city和job参数：
+def person(name, age, **kw):
+    if 'city' in kw:
+        # 有city参数
+        pass
+    if 'job' in kw:
+        # 有job参数
+        pass
+    print('name:', name, 'age:', age, 'other:', kw)
+
+
+person('zky', 28, city='hz')  # =>name: zky age: 28 other: {'city': 'hz'}
+
+# 但是调用者仍可以传入不受限制的关键字参数：
+person('Jack', 25, city='HangZhou', addr='BinJiang', zipcode=123456)
+
+
+# => name: Jack age: 25 other: {'city': 'HangZhou', 'addr': 'BinJiang', 'zipcode': 123456}
+
+# 如果要限制关键字参数的名字，就可以用命名关键字参数，例如，只接收city和job作为关键字参数。这种方式定义的函数如下：
+def person(name, age, *, city, job):
+    print(name, age, city, job)
+
+
+# 和关键字参数**kw不同，命名关键字参数需要一个特殊分隔符*，*后面的参数被视为命名关键字参数。
+#
+# 调用方式如下：
+person('Jim', 24, city='NewYock', job='Enginner')
+
+
+# =>Jim 24 NewYock Enginner
+
+# 如果函数定义中已经有了一个可变参数，后面跟着的命名关键字参数就不再需要一个特殊分隔符*了：
+
+def person(name, age, *args, city, job):
+    print(name, age, args, city, job)
+
+
+# person('jack',24,'hangzhou','enginner') # TypeError: person() missing 2 required keyword-only arguments: 'city' and 'job'
+
+person('jack', 27, city='hangzhou', job='enginner')  # => jack 27 () hangzhou enginner
+
+
+# 由于调用时缺少参数名city和job，Python解释器把这4个参数均视为位置参数，但person()函数仅接受2个位置参数。
+#
+# 命名关键字参数可以有缺省值，从而简化调用：
+
+def person(name, age, *, city='hangzhou', job):
+    print(name, age, city, job)
+
+
+# 由于命名关键字参数city具有默认值，调用时，可不传入city参数：
+person('Jobs', 24, job='Engineer')  # => Jobs 24 hangzhou Engineer
+
+
+# 使用命名关键字参数时，要特别注意，如果没有可变参数，就必须加一个*作为特殊分隔符。如果缺少*，Python解释器将无法识别位置参数和命名关键字参数：
+
+
+def person(name, age, city, job):
+    # 缺少 *，city和job被视为位置参数
+    pass
+
 
