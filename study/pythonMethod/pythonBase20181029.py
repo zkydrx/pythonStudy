@@ -10,13 +10,16 @@
 #
 # 于是，fact(n)用递归的方式写出来就是：
 def fact(n):
-    if n ==1:
+    if n == 1:
         return 1
-    return n*fact(n-1)
+    return n * fact(n - 1)
+
 
 # 上面就是一个递归函数。可以试试：
-print(fact(5)) #=> 120
-print(fact(100)) #=> 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+print(fact(5))  # => 120
+print(fact(
+    100))  # => 93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000
+
 
 # 如果我们计算fact(5)，可以根据函数定义看到计算过程如下：
 #
@@ -44,11 +47,14 @@ print(fact(100)) #=> 93326215443944152681699238856266700490715968264381621468592
 # 上面的fact(n)函数由于return n * fact(n - 1)引入了乘法表达式，所以就不是尾递归了。要改成尾递归方式，需要多一点代码，主要是要把每一步的乘积传入到递归函数中：
 
 def fact(n):
-    return fact_iter(n,1)
-def fact_iter(num,product):
-    if num ==1:
+    return fact_iter(n, 1)
+
+
+def fact_iter(num, product):
+    if num == 1:
         return product
-    return fact_iter(num-1,num*product)
+    return fact_iter(num - 1, num * product)
+
 
 # 可以看到，return fact_iter(num - 1, num * product)仅返回递归函数本身，num - 1和num * product在函数调用前就会被计算，不影响函数调用。
 #
@@ -65,6 +71,7 @@ def fact_iter(num,product):
 
 """fact(1000) #=>RecursionError: maximum recursion depth exceeded in comparison"""
 
+
 # 小结
 # 使用递归函数的优点是逻辑简单清晰，缺点是过深的调用会导致栈溢出。
 #
@@ -77,15 +84,16 @@ def fact_iter(num,product):
 #
 # 请编写move(n, a, b, c)函数，它接收参数n，表示3个柱子A、B、C中第1个柱子A的盘子数量，然后打印出把所有盘子从A借助B移动到C的方法，例如：
 
-def move(n,a,b,c):
-    if n==1:
-        print(a,'--->',c)
+def move(n, a, b, c):
+    if n == 1:
+        print(a, '--->', c)
     else:
-        move(n-1,a,c,b)
-        print(a,'--->',c)
-        move(n-1,b,a,c)
+        move(n - 1, a, c, b)
+        print(a, '--->', c)
+        move(n - 1, b, a, c)
 
-move(3,'a','b','c')
+
+move(3, 'a', 'b', 'c')
 
 # a ---> c
 # a ---> b
