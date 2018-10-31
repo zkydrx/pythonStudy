@@ -37,27 +37,17 @@ g = (x * x for x in range(10))
 for n in g:
     print(n)
 
-# 0
-# 1
-# 4
-# 9
-# 16
-# 25
-# 36
-# 49
-# 64
-# 81
-# 0
-# 1
-# 4
-# 9
-# 16
-# 25
-# 36
-# 49
-# 64
-# 81
 
+# 0
+# 1
+# 4
+# 9
+# 16
+# 25
+# 36
+# 49
+# 64
+# 81
 
 
 # 所以，我们创建了一个generator后，基本上永远不会调用next()，而是通过for循环来迭代它，并且不需要关心StopIteration的错误。
@@ -70,12 +60,14 @@ for n in g:
 #
 # 斐波拉契数列用列表生成式写不出来，但是，用函数把它打印出来却很容易：
 def fib(max):
-    n,a,b = 0,0,1
-    while n <max:
+    n, a, b = 0, 0, 1
+    while n < max:
         print(b)
-        a,b = b,a+b
-        n = n+1
+        a, b = b, a + b
+        n = n + 1
     return 'done'
+
+
 # 注意，赋值语句：
 # a,b = b,a+b
 # 相当于
@@ -87,6 +79,8 @@ def fib(max):
 # 上面的函数可以输出斐波那契数列的前N个数：
 
 print(fib(6))
+
+
 # 1
 # 1
 # 2
@@ -101,17 +95,20 @@ print(fib(6))
 # 也就是说，上面的函数和generator仅一步之遥。要把fib函数变成generator，只需要把print(b)改为yield b就可以了：
 
 def fib(max):
-    n,a,b =0,0,1
-    while n<max:
+    n, a, b = 0, 0, 1
+    while n < max:
         yield b
-        a,b=b,a+b;
-        n = n+1
+        a, b = b, a + b;
+        n = n + 1
     return 'done'
+
+
 # 这就是定义generator的另一种方法。如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator：
 
 # print(fib(6)) #=><generator object fib at 0x000001DB7A339318>
 
-# 这里，最难理解的就是generator和函数的执行流程不一样。函数是顺序执行，遇到return语句或者最后一行函数语句就返回。而变成generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。
+# 这里，最难理解的就是generator和函数的执行流程不一样。函数是顺序执行，遇到return语句或者最后一行函数语句就返回。
+# 而变成generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。
 #
 # 举个简单的例子，定义一个generator，依次返回数字1，3，5：
 
@@ -123,6 +120,7 @@ def odd():
     print('step 3')
     yield (5)
 
+
 # 调用该generator时，首先要生成一个generator对象，然后用next()函数不断获得下一个返回值：
 #
 
@@ -130,7 +128,6 @@ o = odd()
 print(next(o))
 print(next(o))
 print(next(o))
-
 
 # step 1:
 # 1
@@ -155,33 +152,86 @@ g = fib(6)
 while True:
     try:
         x = next(g)
-        print('g:',x)
+        print('g:', x)
     except StopIteration as e:
-        print('Generator run value:',e.value)
+        print('Generator run value:', e.value)
         break
-# g: 1
-# g: 1
-# g: 2
-# g: 3
-# g: 5
-# g: 8
-# Generator run value: done
+    # g: 1
+    # g: 1
+    # g: 2
+    # g: 3
+    # g: 5
+    # g: 8
+    # Generator run value: done
+
+    # 关于如何捕获错误，后面的错误处理还会详细讲解。
+
+    # 小结
+    # generator是非常强大的工具，在Python中，可以简单地把列表生成式改成generator，也可以通过函数实现复杂逻辑的generator。
+    #
+    # 要理解generator的工作原理，它是在for循环的过程中不断计算出下一个元素，并在适当的条件结束for循环。对于函数改成的generator来说，遇到return语句或者执行到函数体最后一行语句，就是结束generator的指令，for循环随之结束。
+    #
+    # 请注意区分普通函数和generator函数，普通函数调用直接返回结果：
+    #
+    # >>> r = abs(6)
+    # >>> r
+    # 6
+    # generator函数的“调用”实际返回一个generator对象：
+    #
+    # >>> g = fib(6)
+    # >>> g
+    # <generator object fib at 0x1022ef948>
+
+    # 练习
+    # 杨辉三角定义如下：
+    #
+    #           1
+    #          / \
+    #         1   1
+    #        / \ / \
+    #       1   2   1
+    #      / \ / \ / \
+    #     1   3   3   1
+    #    / \ / \ / \ / \
+    #   1   4   6   4   1
+    #  / \ / \ / \ / \ / \
+    # 1   5   10  10  5   1
+    # 把每一行看做一个list，试写一个generator，不断输出下一行的list：
 
 
-# 关于如何捕获错误，后面的错误处理还会详细讲解。
+def triangles():
+    N = [1]
+    while True:
+        yield N
+        N.append(0)
+        N = [N[i] + N[i - 1] for i in range(len(N))]
 
-# 小结
-# generator是非常强大的工具，在Python中，可以简单地把列表生成式改成generator，也可以通过函数实现复杂逻辑的generator。
-#
-# 要理解generator的工作原理，它是在for循环的过程中不断计算出下一个元素，并在适当的条件结束for循环。对于函数改成的generator来说，遇到return语句或者执行到函数体最后一行语句，就是结束generator的指令，for循环随之结束。
-#
-# 请注意区分普通函数和generator函数，普通函数调用直接返回结果：
-#
-# >>> r = abs(6)
-# >>> r
-# 6
-# generator函数的“调用”实际返回一个generator对象：
-#
-# >>> g = fib(6)
-# >>> g
-# <generator object fib at 0x1022ef948>
+
+
+
+n = 0
+results = []
+for t in triangles():
+    print(t)
+    results.append(t)
+    print(results)
+    n = n + 1
+    if n == 10:
+        break
+print(results)
+if results == [
+    [1],
+    [1, 1],
+    [1, 2, 1],
+    [1, 3, 3, 1],
+    [1, 4, 6, 4, 1],
+    [1, 5, 10, 10, 5, 1],
+    [1, 6, 15, 20, 15, 6, 1],
+    [1, 7, 21, 35, 35, 21, 7, 1],
+    [1, 8, 28, 56, 70, 56, 28, 8, 1],
+    [1, 9, 36, 84, 126, 126, 84, 36, 9, 1]
+]:
+    print('测试通过!')
+else:
+    print('测试失败!')
+# 这个杨辉三角的算法有点问题，稍后会仔细的研究一下
