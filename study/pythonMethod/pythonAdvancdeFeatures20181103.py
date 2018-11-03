@@ -87,10 +87,19 @@ def devide(x, y, z, f):
     return f(x) / f(y) + f(z)
 
 
-print(devide(1, 4, 4, math.sqrt))  # =>0.408248290463863
+print(devide(1, 4, 4, math.sqrt))  # =>2.5
 # x = 1
 # y = 4
 # z = 4
 # f = math.sqrt
 # f(x)/f(y)+f(z) = math.sqrt(1)/math.sqrt(4)+math.sqrt(3) #=>2.5
 # return 2.5
+
+print(devide(1.2342, 2.123, 3.3242, math.floor))  # =>3.5
+
+# x = 1.2342
+# y=2.123
+# z=3.3242
+# f = math.floor
+# f(x) / f(y) + f(z) = math.floor(1.2342) / math.floor(2.123) + math.floor(3.3242)  # => 3.5
+# return 3.5
