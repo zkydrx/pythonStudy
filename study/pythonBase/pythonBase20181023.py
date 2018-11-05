@@ -82,32 +82,53 @@ classmates = ('Michael', 'Bob', 'Tracy')
 #
 # tuple的陷阱：当你定义一个tuple时，在定义的时候，tuple的元素就必须被确定下来，比如：
 
-t = (1,2,'zky')
+t = (1, 2, 'zky')
 print(t)
 # 如果要定义一个空的tuple，可以写成()：
 t = ()
 
-print(t) #=>()
+print(t)  # =>()
 
 # 但是，要定义一个只有1个元素的tuple，如果你这么定义：
 t = (1)
-print(t) #=>1
+print(t)  # =>1
 # 定义的不是tuple，是1这个数！这是因为括号()既可以表示tuple，又可以表示数学公式中的小括号，这就产生了歧义，因此，Python规定，这种情况下，按小括号进行计算，计算结果自然是1。
 #
 # 所以，只有1个元素的tuple定义时必须加一个逗号,，来消除歧义：
-t =(1,)
-print(t) #=>(1,)
+t = (1,)
+print(t)  # =>(1,)
 
 # Python在显示只有1个元素的tuple时，也会加一个逗号,，以免你误解成数学计算意义上的括号。
 #
 # 最后来看一个“可变的”tuple：
 
-t = ('a','b',['A','B'])
-print("modify before:",t) #=>('a', 'b', ['A', 'B'])
-t[2][0] ='X'
+t = ('a', 'b', ['A', 'B'])
+print("modify before:", t)  # =>('a', 'b', ['A', 'B'])
+t[2][0] = 'X'
 t[2][1] = 'Y'
-print('modify after:',t) #=>('a', 'b', ['X', 'Y'])
+print('modify after:', t)  # =>('a', 'b', ['X', 'Y'])
 # 这个tuple定义的时候有3个元素，分别是'a'，'b'和一个list。不是说tuple一旦定义后就不可变了吗？怎么后来又变了？
 #
 # 别急，我们先看看定义的时候tuple包含的3个元素：解说看文档：
 
+# 假设我们用一组tuple表示学生名字和成绩：
+#
+# L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+# 请用sorted()对上述列表分别按名字排序：
+from operator import itemgetter
+
+L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+
+print(sorted(L, key=itemgetter(0)))  # =>[('Adam', 92), ('Bart', 66), ('Bob', 75), ('Lisa', 88)]
+print(sorted(L, key=lambda t: t[0]))  # =>[('Adam', 92), ('Bart', 66), ('Bob', 75), ('Lisa', 88)]
+
+# 再按成绩从高到低排序：
+print(sorted(L, key=lambda t: t[1], reverse=True))  # =>[('Adam', 92), ('Lisa', 88), ('Bob', 75), ('Bart', 66)]
+print(sorted(L, key=itemgetter(1), reverse=True))  # =>[('Adam', 92), ('Lisa', 88), ('Bob', 75), ('Bart', 66)]
+
+a = [1, 2, -2, 3, 4, -10]
+
+import math
+print(sorted(a))  # =>[-10, -2, 1, 2, 3, 4]
+print(sorted(a, reverse=True))  # =>[4, 3, 2, 1, -2, -10]
+print(sorted(a, key=math.cos,reverse=True))  # =>[1, 2, -2, 4, -10, 3]
