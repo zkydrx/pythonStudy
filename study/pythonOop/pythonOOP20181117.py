@@ -66,3 +66,5 @@ else:
         else:
             print('Students:', Student.count)
             print('测试通过!')
+
+print(Student('AAAA').count) # =>3
