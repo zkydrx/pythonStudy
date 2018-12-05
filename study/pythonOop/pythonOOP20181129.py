@@ -80,4 +80,7 @@ with open('./file/fileA.txt','r') as f:
 #
 # StringIO就是在内存中创建的file-like Object，常用作临时缓冲。
 
+# 二进制文件
+# 前面讲的默认都是读取文本文件，并且是UTF-8编码的文本文件。要读取二进制文件，比如图片、视频等等，用'rb'模式打开文件即可：
+
 
