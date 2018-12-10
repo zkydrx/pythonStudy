@@ -66,3 +66,73 @@ print(json.dumps(d2)) # =>{"name": "Google", "age": 20, "score": 100}
 json_str = '{"name": "Google", "age": 20, "score": 100}'
 print(json.loads(json_str)) # =>{'name': 'Google', 'age': 20, 'score': 100}
 # 由于JSON标准规定JSON编码是UTF-8，所以我们总是能正确地在Python的str与JSON的字符串之间转换。
+
+# JSON进阶
+# Python的dict对象可以直接序列化为JSON的{}，不过，很多时候，我们更喜欢用class表示对象，比如定义Student类，然后序列化：
+
+import json
+class Student(object):
+    def __init__(self,name,age,score):
+        self.name=name
+        self.age=age
+        self.score=score
+
+s = Student('Abbot',20,100)
+# print(json.dumps(s))
+# 运行代码，毫不留情地得到一个TypeError：
+# TypeError: Object of type Student is not JSON serializable
+# 错误的原因是Student对象不是一个可序列化为JSON的对象。
+#
+# 如果连class的实例对象都无法序列化为JSON，这肯定不合理！
+#
+# 别急，我们仔细看看dumps()方法的参数列表，可以发现，除了第一个必须的obj参数外，dumps()方法还提供了一大堆的可选参数：
+#
+# https://docs.python.org/3/library/json.html#json.dumps
+#
+# 这些可选参数就是让我们来定制JSON序列化。前面的代码之所以无法把Student类实例序列化为JSON，是因为默认情况下，dumps()方法不知道如何将Student实例变为一个JSON的{}对象。
+#
+# 可选参数default就是把任意一个对象变成一个可序列为JSON的对象，我们只需要为Student专门写一个转换函数，再把函数传进去即可：
+
+def student2dict(std):
+    return {
+        'name':std.name,
+        'age':std.age,
+        'score':std.score
+    }
+
+
+# 这样，Student实例首先被student2dict()函数转换成dict，然后再被顺利序列化为JSON：
+print(json.dumps(s,default=student2dict))
+# {"name": "Abbot", "age": 20, "score": 100}
+
+
+# 不过，下次如果遇到一个Teacher类的实例，照样无法序列化为JSON。我们可以偷个懒，把任意class的实例变为dict：
+
+print(json.dumps(s,default=lambda obj:obj.__dict__)) # =>{"name": "Abbot", "age": 20, "score": 100}
+
+# 因为通常class的实例都有一个__dict__属性，它就是一个dict，用来存储实例变量。也有少数例外，比如定义了__slots__的class。
+#
+# 同样的道理，如果我们要把JSON反序列化为一个Student对象实例，loads()方法首先转换出一个dict对象，然后，我们传入的object_hook函数负责把dict转换为Student实例：
+
+def dict2student(d):
+    return Student(d['name'],d['age'],d['score'])
+
+
+json_str1 = '{"name": "Abbot", "age": 20, "score": 100}'
+
+print(json.loads(json_str1,object_hook=dict2student))
+# <__main__.Student object at 0x0000019C239533C8>
+# 打印出的是反序列化的Student实例对象。
+
+# 小结
+# Python语言特定的序列化模块是pickle，但如果要把序列化搞得更通用、更符合Web标准，就可以使用json模块。
+#
+# json模块的dumps()和loads()函数是定义得非常好的接口的典范。当我们使用时，只需要传入一个必须的参数。但是，当默认的序列化或反序列机制不满足我们的要求时，我们又可以传入更多的参数来定制序列化或反序列化的规则，既做到了接口简单易用，又做到了充分的扩展性和灵活性。
+
+
+# 练习
+# 对中文进行JSON序列化时，json.dumps()提供了一个ensure_ascii参数，观察该参数对结果的影响：
+import json
+obj = dict(name='小明',age=29)
+s = json.dumps(obj,ensure_ascii=True)
+print(s) # {"name": "\u5c0f\u660e", "age": 29} 把字符串转换成了utf-8编码
