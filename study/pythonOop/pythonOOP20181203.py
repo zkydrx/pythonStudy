@@ -254,3 +254,12 @@ if __name__ == '__main__':
 # Get B from queue:
 # Put C to queue...
 # Get C from queue:
+
+# 在Unix/Linux下，multiprocessing模块封装了fork()调用，使我们不需要关注fork()的细节。由于Windows没有fork调用，因此，multiprocessing需要“模拟”出fork的效果，父进程所有Python对象都必须通过pickle序列化再传到子进程去，所有，如果multiprocessing在Windows下调用失败了，要先考虑是不是pickle失败了。
+#
+# 小结
+# 在Unix/Linux下，可以使用fork()调用实现多进程。
+#
+# 要实现跨平台的多进程，可以使用multiprocessing模块。
+#
+# 进程间通信是通过Queue、Pipes等实现的。
