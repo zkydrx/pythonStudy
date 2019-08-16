@@ -16,6 +16,7 @@ player_shoot = 0
 score = 0
 level = 1
 
+pygame.mixer.pre_init(44100, 16, 2, 4096)
 pygame.init()
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
